@@ -1,0 +1,53 @@
+---
+# tasks file for kubeadm
+- name: add Kubernetes' YUM repository
+  yum_repository:
+    name: Kubernetes
+    description: Kubernetes YUM repository
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
+    gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+    gpgcheck: yes
+
+- name: ensure net.bridge.bridge-nf-call-ip6tables is set to 1
+  sysctl:
+    name: net.bridge.bridge-nf-call-ip6tables
+    value: "1"
+    state: present
+
+- name: ensure net.bridge.bridge-nf-call-iptables is set to 1
+  sysctl:
+    name: net.bridge.bridge-nf-call-iptables
+    value: "1"
+    state: present
+
+- name: Put SELinux in permissive mode, logging actions that would be blocked.
+  selinux:
+    policy: targeted
+    state: permissive
+
+- name: Ensure SELinux is set to enforcing mode
+  lineinfile:
+    path: /etc/selinux/config
+    regexp: '^SELINUX='
+    line: SELINUX=permissive
+
+- name: install kubelet kubeadm kubectl
+  yum:
+    name: '{{ item }}'
+    state: present
+    update_cache: True
+    disable_excludes: 'kubernetes'
+  with_items:
+    - kubelet
+    - kubeadm
+    - kubectl
+  
+- name: enable kubelet
+  service:
+    name: kubelet
+    state: started
+    enabled: yes
+
+
+
+

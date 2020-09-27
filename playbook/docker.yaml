@@ -1,0 +1,5 @@
+---
+- hosts: all
+  name: Install Docker main 
+  roles:
+    - {role: "roles/docker"}

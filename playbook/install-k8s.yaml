@@ -1,0 +1,7 @@
+---
+- hosts: all
+  name: install install-kubeadm
+  become: true
+  roles:
+    - {role: "roles/docker"}
+    - {role: "roles/kubeadm"}

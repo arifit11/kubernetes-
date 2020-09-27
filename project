@@ -1,0 +1,19 @@
+1. Launch an EC2 instance with the following config
+    Region: NV
+    AMI: Amazon Linux 2 AMI (HVM), SSD Volume Type - ami-0873b46c45c11058d
+    Instance Type: t2.medium
+    VPC: krystal
+    Security group: create new
+    Assign a public IP
+    Name the server as -  Arif
+    Keypair: Use the keypair - Arif
+
+2. Create an Ansible role to install Docker and Kubeadm on the server (https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/)
+
+3. Setup Cluster with Kubeadm (https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/) These steps can be done manually, no need to use Ansible.
+   While running the kubeadm init command use the parameter "--pod-network-cidr 10.244.0.0/16"
+   For networking (Pod network add-on) use Calico https://docs.projectcalico.org/getting-started/kubernetes/quickstart
+
+4. Run a pod with image "nginx" using "kubectl run". Make sure the pod is in a running state.
+
+5. Create a yaml file to run a pod with image "redis" and expose the redis port as a NodePort. From the server, check if you are able to connect to the redis pod using redis-cli.

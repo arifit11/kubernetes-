@@ -1,0 +1,6 @@
+---
+- name: testing the roles
+  tasks:
+    - debug:
+        msg: "hello world "
+        var: hostvars[inventory_hostname]
